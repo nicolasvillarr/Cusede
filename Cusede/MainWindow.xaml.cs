@@ -68,28 +68,44 @@ namespace Cusede
             if (audioStreamInfo != null)
             {
                 var stream = await yt_client.Videos.Streams.GetAsync(audioStreamInfo);
-                Window_Closing(null, null);
+                Window_Starting(1, null);
                 reader = new MediaFoundationReader(audioStreamInfo.Url);
                 wave_o_event.Init(reader);
                 wave_o_event.Play();
             }
         }
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e = null)
+
+        private void Window_Starting(object sender, System.ComponentModel.CancelEventArgs e = null)
         {
+            if (Convert.ToInt32(sender) == 1)
+            {
+                
             wave_o_event?.Stop();
             reader?.Dispose();
             wave_o_event?.Dispose();
+            }
+            if (Convert.ToInt32(sender) == 2)
+            {
+                wave_o_event?.Play();
+                reader?.Dispose();
+                wave_o_event?.Dispose();
+            }
         }
 
         private void SearchButton_Start_Click(object sender, RoutedEventArgs e)
         {
-
+            Window_Starting(2, null);
         }
 
 
         private void SearchButton_Pause_Click(object sender, RoutedEventArgs e)
         {
-            Window_Closing(sender, null);
+            Window_Starting(1, null);
+        }
+
+        private void CambiarMusica_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

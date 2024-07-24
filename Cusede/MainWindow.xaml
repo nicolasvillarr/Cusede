@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cusede"
         mc:Ignorable="d"
-        Title="MainWindow" Height="546" Width="398">
+        Title="MainWindow" Height="600" Width="398">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Template">
@@ -53,6 +53,34 @@
                     <GradientStop Color="#FF34B626" Offset="1"/>
                 </LinearGradientBrush>
             </Button.BorderBrush>
+        </Button>
+        <Button x:Name="MusicaAtras"  Content="⏮︎" Margin="192,136,178,385" Click="CambiarMusica_Click" FontFamily="Segoe UI Symbol" FontSize="6" Height="14" >
+            <Button.BorderBrush >
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" >
+                    <GradientStop Color="#FF33E91F"/>
+                    <GradientStop Color="#FF34B626" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.BorderBrush>
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF30EF1D"/>
+                    <GradientStop Color="#FF118F04" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Button x:Name="MusicaAdelante"  Content="⏭︎" Margin="225,109,145,355" Click="SearchButton_Start_Click"  FontFamily="Segoe UI Symbol" Width="28" Height="14" >
+            <Button.BorderBrush >
+                <LinearGradientBrush >
+                    <GradientStop Color="#FF33E91F"/>
+                    <GradientStop Color="#FF34B626" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.BorderBrush>
+            <Button.Background>
+                <LinearGradientBrush >
+                    <GradientStop Color="#FF30EF1D"/>
+                    <GradientStop Color="#FF118F04" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
         </Button>
     </Grid>
 </Window>
