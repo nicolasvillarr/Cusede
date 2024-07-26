@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cusede"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="398">
+        Title="Cusede" Height="650" Width="430" FontFamily="Verdana"
+        ResizeMode="NoResize"
+        WindowStyle="SingleBorderWindow"
+        WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Template">
@@ -21,10 +24,32 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <!--<Style x:Key="CustomSliderStyle" TargetType="Slider">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Slider">
+                        <Grid>
+                            --><!-- Track --><!--
+                            <Track Name="PART_Track" VerticalAlignment="Center">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="Slider.DecreaseSmall" Style="{x:Null}" />
+                                </Track.DecreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource {x:Static Slider}}" />
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="Slider.IncreaseSmall" Style="{x:Null}" />
+                                </Track.IncreaseRepeatButton>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>-->
     </Window.Resources>
     <Grid Margin="0,49,0,0">
-        <TextBox Name="SearchBox" Width="300" Height="30" Margin="38,168,60,283"/>
-        <Button Content="Buscar" Width="100" Height="30" Margin="288,79,10,264" Click="SearchButton_Click"/>
+        <TextBox Name="SearchBox" Margin="10,192,142,369"/>
+        <Button Content="Buscar" Width="100" Margin="20,161,310,401" Click="SearchButton_Click"/>
         <ListBox Name="ResultsList" Margin="0,216,0,0" SelectionChanged="ResultsList_SelectionChanged"/>
         <Button Width="33" Height="21"  Content="||" Margin="109,109,256,351" Click="SearchButton_Start_Click"  FontFamily="Showcard Gothic" FontWeight="Bold" >
             <Button.BorderBrush >
@@ -54,7 +79,7 @@
                 </LinearGradientBrush>
             </Button.BorderBrush>
         </Button>
-        <Button x:Name="MusicaAtras"  Content="⏮︎" Margin="192,136,178,385" Click="CambiarMusica_Click" FontFamily="Segoe UI Symbol" FontSize="6" Height="14" >
+        <Button x:Name="MusicaAtras"  Content="⏮︎" Margin="162,109,145,355"  FontFamily="Segoe UI Symbol" Width="28" Height="14" Click="MusicaAtras_Click" >
             <Button.BorderBrush >
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" >
                     <GradientStop Color="#FF33E91F"/>
@@ -68,7 +93,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="MusicaAdelante"  Content="⏭︎" Margin="225,109,145,355" Click="SearchButton_Start_Click"  FontFamily="Segoe UI Symbol" Width="28" Height="14" >
+        <Button x:Name="MusicaAdelante"  Content="⏭︎" Margin="225,109,145,355"  FontFamily="Segoe UI Symbol" Width="28" Height="14" Click="MusicaAdelante_Click" >
             <Button.BorderBrush >
                 <LinearGradientBrush >
                     <GradientStop Color="#FF33E91F"/>
@@ -82,5 +107,26 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10"/>
+        <Slider x:Name="VolumeSlider" Minimum="0" Maximum="1" Value="0.5"
+                    ValueChanged="VolumeSlider_ValueChanged" Margin="330,158,0,397" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Background="#FFBBACAC" 
+              >
+            <Slider.LayoutTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Slider.LayoutTransform>
+            <Slider.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="-0.65" ScaleY="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-230.38900000000004"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Slider.RenderTransform>
+        </Slider>
     </Grid>
 </Window>

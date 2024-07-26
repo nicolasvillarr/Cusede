@@ -27,7 +27,7 @@ namespace Cusede
         private readonly YoutubeClient yt_client;
         private WaveOutEvent wave_o_event;
         private MediaFoundationReader reader;
-
+        private int currentIndex;
         public MainWindow() 
         {
             InitializeComponent();
@@ -50,13 +50,15 @@ namespace Cusede
                 {
                     break;
                 }
+                currentIndex = 0;
             }
         }
-
+            
         private async void ResultsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ResultsList.SelectedItem is VideoItem videoItem)
             {
+                currentIndex = ResultsList.SelectedIndex;
                 await PlayAudioAsync(videoItem.url);
             }
         }
@@ -68,14 +70,14 @@ namespace Cusede
             if (audioStreamInfo != null)
             {
                 var stream = await yt_client.Videos.Streams.GetAsync(audioStreamInfo);
-                Window_Starting(1, null);
+                WindowStarting(1, null);
                 reader = new MediaFoundationReader(audioStreamInfo.Url);
                 wave_o_event.Init(reader);
                 wave_o_event.Play();
             }
         }
 
-        private void Window_Starting(object sender, System.ComponentModel.CancelEventArgs e = null)
+        private void WindowStarting(object sender, System.ComponentModel.CancelEventArgs e = null)
         {
             if (Convert.ToInt32(sender) == 1)
             {
@@ -91,21 +93,70 @@ namespace Cusede
                 wave_o_event?.Dispose();
             }
         }
+        private async void CahngeMusic(object sender, RoutedEventArgs e = null)
+        {
+            switch (sender)
+            {
+                    case 1 : 
+                    {
+                        if (currentIndex > 0)
+                        {
+                            currentIndex--;
+                            ResultsList.SelectedIndex = currentIndex;
+                            if (ResultsList.SelectedItem is VideoItem previousVideo)
+                            {
+                                await PlayAudioAsync(previousVideo.videoId);
+                            }
+                        }
+                        break;
+                    }
+                    case 2 : 
+                    {
+                        if (currentIndex < ResultsList.Items.Count - 1)
+                        {
+                            currentIndex++;
+                            ResultsList.SelectedIndex = currentIndex;
+                            if (ResultsList.SelectedItem is VideoItem nextVideo)
+                            {
+                                await PlayAudioAsync(nextVideo.videoId);
+                            }
+                        }
+                        break;
+                    }
+                default:
+                    break;
+            }
+        }
 
         private void SearchButton_Start_Click(object sender, RoutedEventArgs e)
         {
-            Window_Starting(2, null);
+            WindowStarting(2, null);
         }
 
 
         private void SearchButton_Pause_Click(object sender, RoutedEventArgs e)
         {
-            Window_Starting(1, null);
+            WindowStarting(1, null);
         }
 
-        private void CambiarMusica_Click(object sender, RoutedEventArgs e)
-        {
 
+
+        private void MusicaAtras_Click(object sender, RoutedEventArgs e)
+        {
+            CahngeMusic(1, null);
+        }
+
+        private void MusicaAdelante_Click(object sender, RoutedEventArgs e)
+        {
+            CahngeMusic(2, null);
+        }
+
+        private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (wave_o_event != null)
+            {
+                wave_o_event.Volume = (float)e.NewValue;
+            }
         }
     }
 }
