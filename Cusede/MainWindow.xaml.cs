@@ -212,7 +212,7 @@ namespace Cusede
         
                 double angle = Math.Atan2(position.Y - centerY, position.X - centerX) * 180 / Math.PI;
                 angle = (angle + 360) % 360; // Normaliza el ángulo
-        
+         
                 double volume = angle / 360;
                 wave_o_event.Volume = (float)volume;
                 double radius = VolumePath.ActualWidth / 2 - VolumeKnob.Width / 2;
