@@ -3,12 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Cusede"
+        xmlns:local="Cusede"
         mc:Ignorable="d"
-        Title="Cusede" Height="650" Width="430" FontFamily="Verdana"
+        Title="Cusede" Height="700" Width="500" FontFamily="Verdana"
         ResizeMode="NoResize"
-        WindowStyle="SingleBorderWindow"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
         WindowStartupLocation="CenterOwner">
+
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Template">
@@ -17,116 +20,106 @@
                         <Border Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="15">
+                                CornerRadius="5">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        <!--<Style x:Key="CustomSliderStyle" TargetType="Slider">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Slider">
-                        <Grid>
-                            --><!-- Track --><!--
-                            <Track Name="PART_Track" VerticalAlignment="Center">
-                                <Track.DecreaseRepeatButton>
-                                    <RepeatButton Command="Slider.DecreaseSmall" Style="{x:Null}" />
-                                </Track.DecreaseRepeatButton>
-                                <Track.Thumb>
-                                    <Thumb Style="{StaticResource {x:Static Slider}}" />
-                                </Track.Thumb>
-                                <Track.IncreaseRepeatButton>
-                                    <RepeatButton Command="Slider.IncreaseSmall" Style="{x:Null}" />
-                                </Track.IncreaseRepeatButton>
-                            </Track>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>-->
     </Window.Resources>
-    <Grid Margin="0,49,0,0">
-        <TextBox Name="SearchBox" Margin="10,192,142,369"/>
-        <Button Content="Buscar" Width="100" Margin="20,161,310,401" Click="SearchButton_Click"/>
-        <ListBox Name="ResultsList" Margin="0,216,0,0" SelectionChanged="ResultsList_SelectionChanged"/>
-        <Button Width="33" Height="21"  Content="||" Margin="109,109,256,351" Click="SearchButton_Start_Click"  FontFamily="Showcard Gothic" FontWeight="Bold" >
-            <Button.BorderBrush >
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" >
-                    <GradientStop Color="#FF33E91F"/>
-                    <GradientStop Color="#FF34B626" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.BorderBrush>
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF30EF1D"/>
-                    <GradientStop Color="#FF118F04" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-        <Button Width="33"  Height="21" Content="⬛" Margin="147,109,218,351" FontFamily="Onyx" FontSize="14" Click="SearchButton_Pause_Click" >
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF30EF1D"/>
-                    <GradientStop Color="#FF118F04" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
-            <Button.BorderBrush >
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" >
-                    <GradientStop Color="#FF33E91F"/>
-                    <GradientStop Color="#FF34B626" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.BorderBrush>
-        </Button>
-        <Button x:Name="MusicaAtras"  Content="⏮︎" Margin="162,109,145,355"  FontFamily="Segoe UI Symbol" Width="28" Height="14" Click="MusicaAtras_Click" >
-            <Button.BorderBrush >
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" >
-                    <GradientStop Color="#FF33E91F"/>
-                    <GradientStop Color="#FF34B626" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.BorderBrush>
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF30EF1D"/>
-                    <GradientStop Color="#FF118F04" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-        <Button x:Name="MusicaAdelante"  Content="⏭︎" Margin="225,109,145,355"  FontFamily="Segoe UI Symbol" Width="28" Height="14" Click="MusicaAdelante_Click" >
-            <Button.BorderBrush >
-                <LinearGradientBrush >
-                    <GradientStop Color="#FF33E91F"/>
-                    <GradientStop Color="#FF34B626" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.BorderBrush>
-            <Button.Background>
-                <LinearGradientBrush >
-                    <GradientStop Color="#FF30EF1D"/>
-                    <GradientStop Color="#FF118F04" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10"/>
-        <Slider x:Name="VolumeSlider" Minimum="0" Maximum="1" Value="0.5"
-                    ValueChanged="VolumeSlider_ValueChanged" Margin="330,158,0,397" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Background="#FFBBACAC" 
-              >
-            <Slider.LayoutTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="0"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Slider.LayoutTransform>
-            <Slider.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleX="-0.65" ScaleY="-1"/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-230.38900000000004"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Slider.RenderTransform>
-        </Slider>
+
+    <Grid Background="Transparent">
+        <!-- Definición de la forma personalizada -->
+        <Path x:Name="WindowShape" Fill="LightGray" Stroke="Black" StrokeThickness="2" Data="M0,0 L300,0 L320,20 L320,100 L400,100 L420,120 L420,500 L400,520 L0,520 Z"/>
+
+        <!-- Clipping de la ventana según la forma personalizada -->
+        <Grid Clip="{Binding Data, ElementName=WindowShape}">
+            <Grid Margin="10">
+                <!-- Aquí irán los controles y contenidos de tu ventana -->
+                <TextBox Name="SearchBox" Margin="64,224,136,436" Width="280" Height="20" KeyDown="SearchBox_KeyDown"/>
+                <Button Content="Buscar" Margin="20,167,415,493" Click="SearchButton_Click" Height="20"/>
+                <ListBox Name="ResultsList" Margin="0,244,71,169" SelectionChanged="ResultsList_SelectionChanged"/>
+
+                <!-- Playback controls -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,152,0,0" Width="300" Height="35">
+                    <Button Width="33" Height="21" Content="⏮︎" FontFamily="Segoe UI Symbol" FontSize="14" Click="MusicaAtras_Click" >
+                        <Button.BorderBrush>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF33E91F"/>
+                                <GradientStop Color="#FF34B626" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.BorderBrush>
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF30EF1D"/>
+                                <GradientStop Color="#FF118F04" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button Width="33" Height="21" Content="||" FontFamily="Showcard Gothic" FontWeight="Bold" Click="SearchButton_Start_Click">
+                        <Button.BorderBrush>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF33E91F"/>
+                                <GradientStop Color="#FF34B626" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.BorderBrush>
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF30EF1D"/>
+                                <GradientStop Color="#FF118F04" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button Width="33" Height="21" Content="⬛" FontFamily="Onyx" FontSize="14" Click="SearchButton_Pause_Click">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF30EF1D"/>
+                                <GradientStop Color="#FF118F04" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <Button.BorderBrush>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF33E91F"/>
+                                <GradientStop Color="#FF34B626" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.BorderBrush>
+                    </Button>
+                    <Button Width="33" Height="21" Content="⏭︎" FontFamily="Segoe UI Symbol" FontSize="14" Click="MusicaAdelante_Click">
+                        <Button.BorderBrush>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF33E91F"/>
+                                <GradientStop Color="#FF34B626" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.BorderBrush>
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF30EF1D"/>
+                                <GradientStop Color="#FF118F04" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                </StackPanel>
+
+                <!-- Volume control -->
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Margin="0,167,71,0" VerticalAlignment="Top" Height="77" Width="409">
+                    <!-- Control de progreso de la canción -->
+                    <TextBlock Name="CurrentTimeText" Text="0:00" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <Slider x:Name="ProgressSlider" Width="218" Minimum="0" Maximum="1000" Value="0" ValueChanged="ProgressSlider_ValueChanged"
+                    PreviewMouseUp="ProgressSlider_MouseUp"/>
+
+                    <!-- Aquí empieza el nuevo control de volumen -->
+                    <Canvas Margin="350,0,0,0" Width="50" Height="50" MouseMove="VolumeDial_MouseMove">
+                        <Ellipse Width="45" Height="45" Stroke="Black" StrokeThickness="2" Fill="LightGray" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Path x:Name="VolumePath" Fill="Green" Stroke="Gray" StrokeThickness="2"
+          Data="M 25,25 L 25,5 A 20,20 0 1 1 25,45 Z" HorizontalAlignment="Left" Height="45" Stretch="Fill" VerticalAlignment="Center" Width="25" Canvas.Left="20"/>
+                        <Ellipse Canvas.Left="23" Canvas.Top="23" Width="2" Height="2" Fill="Black"/>
+                        <Ellipse x:Name="VolumeKnob" Canvas.Left="25" Canvas.Top="5" Width="5" Height="5" Fill="Red"/>
+                    </Canvas>
+
+                </StackPanel>
+
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

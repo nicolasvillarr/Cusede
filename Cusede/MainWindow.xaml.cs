@@ -17,6 +17,7 @@ using Cusede.helpers;
 using System.Security.Cryptography.X509Certificates;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.Windows.Threading;
 namespace Cusede
 {
     /// <summary>
@@ -24,15 +25,23 @@ namespace Cusede
     /// </summary>
     public partial class MainWindow : Window
     {
+        public event EventHandler<double> VolumeChanged;
         private readonly YoutubeClient yt_client;
         private WaveOutEvent wave_o_event;
         private MediaFoundationReader reader;
+        private DispatcherTimer timerClock;
         private int currentIndex;
-        public MainWindow() 
+        public MainWindow()
         {
             InitializeComponent();
             yt_client = new YoutubeClient();
             wave_o_event = new WaveOutEvent();
+            timerClock = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
+            timerClock.Tick += Timer_Tick;
+
         }
 
 
@@ -44,16 +53,16 @@ namespace Cusede
             int contador = 0;
             await foreach (var video in videos)
             {
-                ResultsList.Items.Add(new VideoItem { titulo = video.Title, url = video.Url, videoId = video.Id});
+                ResultsList.Items.Add(new VideoItem { titulo = video.Title, url = video.Url, videoId = video.Id });
                 contador++;
-                if (contador>30)
+                if (contador > 30)
                 {
                     break;
                 }
                 currentIndex = 0;
             }
         }
-            
+
         private async void ResultsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ResultsList.SelectedItem is VideoItem videoItem)
@@ -74,6 +83,8 @@ namespace Cusede
                 reader = new MediaFoundationReader(audioStreamInfo.Url);
                 wave_o_event.Init(reader);
                 wave_o_event.Play();
+                timerClock.Start();
+
             }
         }
 
@@ -81,10 +92,10 @@ namespace Cusede
         {
             if (Convert.ToInt32(sender) == 1)
             {
-                
-            wave_o_event?.Stop();
-            reader?.Dispose();
-            wave_o_event?.Dispose();
+
+                wave_o_event?.Stop();
+                reader?.Dispose();
+                wave_o_event?.Dispose();
             }
             if (Convert.ToInt32(sender) == 2)
             {
@@ -97,7 +108,7 @@ namespace Cusede
         {
             switch (sender)
             {
-                    case 1 : 
+                case 1:
                     {
                         if (currentIndex > 0)
                         {
@@ -110,7 +121,7 @@ namespace Cusede
                         }
                         break;
                     }
-                    case 2 : 
+                case 2:
                     {
                         if (currentIndex < ResultsList.Items.Count - 1)
                         {
@@ -125,6 +136,30 @@ namespace Cusede
                     }
                 default:
                     break;
+            }
+        }
+
+        private void ProgressSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (reader != null && wave_o_event.PlaybackState == PlaybackState.Playing)
+            {
+                CurrentTimeText.Text = TimeSpan.FromSeconds(e.NewValue).ToString(@"mm\:ss");
+            }
+        }
+
+        private void ProgressSlider_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (reader != null)
+            {
+                reader.CurrentTime = TimeSpan.FromSeconds(ProgressSlider.Value);
+            }
+        }
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (reader != null && wave_o_event.PlaybackState == PlaybackState.Playing)
+            {
+                ProgressSlider.Value = reader.CurrentTime.TotalSeconds;
+                CurrentTimeText.Text = reader.CurrentTime.ToString(@"mm\:ss");
             }
         }
 
@@ -156,6 +191,33 @@ namespace Cusede
             if (wave_o_event != null)
             {
                 wave_o_event.Volume = (float)e.NewValue;
+            }
+        }
+
+        private void SearchBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                SearchButton_Click(null, null);
+            }
+        }
+
+        private void VolumeDial_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                Point position = e.GetPosition(VolumePath);
+                double angle = Math.Atan2(position.Y - 50, position.X - 50) * 180 / Math.PI;
+                angle = (angle + 360) % 360;
+
+                double volume = angle / 360;
+                wave_o_event.Volume = (float)volume;
+
+                // Rotar el knob para representar visualmente el cambio de volumen
+                RotateTransform rotate = new RotateTransform(angle, 50, 50);
+                VolumeKnob.RenderTransform = rotate;
+
+                VolumeChanged?.Invoke(this, volume);
             }
         }
     }
