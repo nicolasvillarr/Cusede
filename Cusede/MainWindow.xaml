@@ -116,7 +116,6 @@
                         <Ellipse Canvas.Left="23" Canvas.Top="23" Width="2" Height="2" Fill="Black"/>
                         <Ellipse x:Name="VolumeKnob" Canvas.Left="25" Canvas.Top="5" Width="5" Height="5" Fill="Red"/>
                     </Canvas>
-
                 </StackPanel>
 
             </Grid>

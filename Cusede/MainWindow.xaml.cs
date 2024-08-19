@@ -207,14 +207,21 @@ namespace Cusede
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 Point position = e.GetPosition(VolumePath);
-                double angle = Math.Atan2(position.Y - 50, position.X - 50) * 180 / Math.PI;
-                angle = (angle + 360) % 360;
-
+                double centerX = VolumePath.ActualWidth / 2;
+                double centerY = VolumePath.ActualHeight / 2;
+        
+                double angle = Math.Atan2(position.Y - centerY, position.X - centerX) * 180 / Math.PI;
+                angle = (angle + 360) % 360; // Normaliza el ángulo
+        
                 double volume = angle / 360;
                 wave_o_event.Volume = (float)volume;
-
-                // Rotar el knob para representar visualmente el cambio de volumen
-                RotateTransform rotate = new RotateTransform(angle, 50, 50);
+                double radius = VolumePath.ActualWidth / 2 - VolumeKnob.Width / 2;
+                double radians = angle * Math.PI / 180;
+                double knobX = centerX + radius * Math.Cos(radians);
+                double knobY = centerY + radius * Math.Sin(radians);
+                Canvas.SetLeft(VolumeKnob, knobX - VolumeKnob.Width / 2);
+                Canvas.SetTop(VolumeKnob, knobY - VolumeKnob.Height / 2);
+                RotateTransform rotate = new RotateTransform(angle, VolumeKnob.Width / 2, VolumeKnob.Height / 2);
                 VolumeKnob.RenderTransform = rotate;
 
                 VolumeChanged?.Invoke(this, volume);
