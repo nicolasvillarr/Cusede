@@ -38,7 +38,7 @@
             <Grid Margin="10">
                 <!-- Aquí irán los controles y contenidos de tu ventana -->
                 <TextBox Name="SearchBox" Margin="64,224,136,436" Width="280" Height="20" KeyDown="SearchBox_KeyDown"/>
-                <Button Content="Buscar" Margin="20,167,415,493" Click="SearchButton_Click" Height="20"/>
+                <Button Content="🔵" Margin="10,160,425,500" Click="SearchButton_Click" Height="20"/>
                 <ListBox Name="ResultsList" Margin="0,244,71,169" SelectionChanged="ResultsList_SelectionChanged"/>
 
                 <!-- Playback controls -->
@@ -100,25 +100,36 @@
                         </Button.Background>
                     </Button>
                 </StackPanel>
-
+                <Button Content="💾" Width="30" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,160,0,0" Click="DownloadButton_Click">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FF30EF1D"/>
+                            <GradientStop Color="#FF118F04" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
                 <!-- Volume control -->
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Margin="0,167,71,0" VerticalAlignment="Top" Height="77" Width="409">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Margin="0,0,150,0" VerticalAlignment="Top" Height="90" Width="405">
                     <!-- Control de progreso de la canción -->
-                    <TextBlock Name="CurrentTimeText" Text="0:00" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                    <Slider x:Name="ProgressSlider" Width="218" Minimum="0" Maximum="1000" Value="0" ValueChanged="ProgressSlider_ValueChanged"
-                    PreviewMouseUp="ProgressSlider_MouseUp"/>
+                    <!-- Control de progreso de la canción -->
+                    <!-- Control de progreso de la canción -->
+                    <!-- Control de progreso de la canción -->
+                    <!-- Control de progreso de la canción -->
+                    <TextBlock x:Name="CurrentTimeText" Text="0:00" Width="30"/>
+                    <Slider x:Name="ProgressSlider" Width="176" Minimum="0" Maximum="1000" Value="0" ValueChanged="ProgressSlider_ValueChanged"
+                        PreviewMouseUp="ProgressSlider_MouseUp" Height="20"/>
 
                     <!-- Aquí empieza el nuevo control de volumen -->
-                    <Canvas Margin="350,0,0,0" Width="50" Height="50" MouseMove="VolumeDial_MouseMove">
-                        <Ellipse Width="45" Height="45" Stroke="Black" StrokeThickness="2" Fill="LightGray" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <Path x:Name="VolumePath" Fill="Green" Stroke="Gray" StrokeThickness="2"
-          Data="M 25,25 L 25,5 A 20,20 0 1 1 25,45 Z" HorizontalAlignment="Left" Height="45" Stretch="Fill" VerticalAlignment="Center" Width="25" Canvas.Left="20"/>
-                        <Ellipse Canvas.Left="23" Canvas.Top="23" Width="2" Height="2" Fill="Black"/>
-                        <Ellipse x:Name="VolumeKnob" Canvas.Left="25" Canvas.Top="5" Width="5" Height="5" Fill="Red"/>
-                    </Canvas>
                 </StackPanel>
 
             </Grid>
         </Grid>
+        <Canvas MouseMove="VolumeDial_MouseMove" Margin="365,205,85,445">
+            <Ellipse Width="45" Height="45" Stroke="Black" StrokeThickness="2" Fill="LightGray" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Path x:Name="VolumePath" Fill="Green" Stroke="Gray" StrokeThickness="2"
+                Data="M 25,25 L 25,5 A 20,20 0 1 1 25,45 Z" HorizontalAlignment="Left" Height="45" Stretch="Fill" VerticalAlignment="Center" Width="25" Canvas.Left="20"/>
+            <Ellipse Canvas.Left="23" Canvas.Top="23" Width="2" Height="2" Fill="Black"/>
+            <Ellipse x:Name="VolumeKnob" Canvas.Left="25" Canvas.Top="5" Width="5" Height="5" Fill="Red"/>
+        </Canvas>
     </Grid>
 </Window>

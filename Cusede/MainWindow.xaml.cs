@@ -18,6 +18,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Windows.Threading;
+using System.IO;
+
 namespace Cusede
 {
     /// <summary>
@@ -31,6 +33,9 @@ namespace Cusede
         private MediaFoundationReader reader;
         private DispatcherTimer timerClock;
         private int currentIndex;
+        private string currentVideoId;
+        private string NameSong;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -49,18 +54,21 @@ namespace Cusede
         {
             var query = SearchBox.Text;
             var videos = yt_client.Search.GetVideosAsync(query);
+
             ResultsList.Items.Clear();
             int contador = 0;
             await foreach (var video in videos)
             {
                 ResultsList.Items.Add(new VideoItem { titulo = video.Title, url = video.Url, videoId = video.Id });
                 contador++;
+
                 if (contador > 30)
                 {
                     break;
                 }
                 currentIndex = 0;
             }
+
         }
 
         private async void ResultsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -68,11 +76,11 @@ namespace Cusede
             if (ResultsList.SelectedItem is VideoItem videoItem)
             {
                 currentIndex = ResultsList.SelectedIndex;
-                await PlayAudioAsync(videoItem.url);
+                await PlayAudioAsync(videoItem.url, videoItem.titulo);
             }
         }
 
-        private async Task PlayAudioAsync(string videoId)
+        private async Task PlayAudioAsync(string videoId, string? title = null)
         {
             var streamManifest = await yt_client.Videos.Streams.GetManifestAsync(videoId);
             var audioStreamInfo = streamManifest.GetAudioStreams().GetWithHighestBitrate();
@@ -84,11 +92,13 @@ namespace Cusede
                 wave_o_event.Init(reader);
                 wave_o_event.Play();
                 timerClock.Start();
+                currentVideoId = videoId;
+                NameSong = title;
 
             }
         }
 
-        private void WindowStarting(object sender, System.ComponentModel.CancelEventArgs e = null)
+        private void WindowStarting(object sender, System.ComponentModel.CancelEventArgs? e = null)
         {
             if (Convert.ToInt32(sender) == 1)
             {
@@ -104,7 +114,7 @@ namespace Cusede
                 wave_o_event?.Dispose();
             }
         }
-        private async void CahngeMusic(object sender, RoutedEventArgs e = null)
+        private async void CahngeMusic(object sender, RoutedEventArgs? e = null)
         {
             switch (sender)
             {
@@ -136,6 +146,51 @@ namespace Cusede
                     }
                 default:
                     break;
+            }
+        }
+
+        private async void DownloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (reader != null)
+                {
+                    // Preguntar al usuario dónde quiere guardar el archivo
+                    var saveFileDialog = new Microsoft.Win32.SaveFileDialog
+                    {
+                        Filter = "MP4 Files (*.mp4)|*.mp4",
+                        FileName = NameSong
+                    };
+
+                    bool? result = saveFileDialog.ShowDialog();
+
+                    if (result == true)
+                    {
+                        string filePath = saveFileDialog.FileName; // Obtener la ruta seleccionada
+
+                        // Descarga de audio
+                        var streamManifest = await yt_client.Videos.Streams.GetManifestAsync(currentVideoId);
+                        var audioStreamInfo = streamManifest.GetAudioOnlyStreams().GetWithHighestBitrate();
+
+                        if (audioStreamInfo != null)
+                         {
+                            using (var inputStream = await yt_client.Videos.Streams.GetAsync(audioStreamInfo))
+                            using (var outputStream = File.Create(filePath))
+                            {
+                                await inputStream.CopyToAsync(outputStream);
+                            }
+                            System.Windows.MessageBox.Show("Descarga completa", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            System.Windows.MessageBox.Show("No se pudo encontrar el stream de audio", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Error al descargar: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
